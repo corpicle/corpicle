@@ -5,11 +5,17 @@ on:
     - cron: "0 0 * * *"
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   generate:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: Generate snake
         uses: Platane/snk@v3
         with:
@@ -17,10 +23,16 @@ jobs:
           outputs: |
             dist/snake.svg?palette=github-dark
 
-      - name: Push snake to output branch
-        uses: crazy-max/ghaction-github-pages@v4
-        with:
-          build_dir: dist
-          build_branch: snake-output
+      - name: Push snake
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git checkout --orphan snake-output
+          git rm -rf .
+          cp dist/snake.svg .
+          git add snake.svg
+          git commit -m "Update snake"
+          git push --force origin snake-output
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
