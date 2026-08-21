@@ -23,6 +23,10 @@
 
 ###
 
+<img data-importer="snake" src="https://raw.githubusercontent.com/corpicle/corpicle/snake-output/snake.svg" alt="Snake animation" />
+
+###
+
 <br clear="both">
 
 <div data-importer="music" align="center">
